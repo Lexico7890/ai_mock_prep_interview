@@ -5,7 +5,7 @@ import { CircleUserRound } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="flex justify-between bg-gray-custom-one border-b-[.5px] border-orange-custom py-3 px-4 items-center fixed top-0 left-0 right-0 z-50">
+    <header className="flex justify-between bg-gray-custom-one/80 backdrop-blur-xl border-b-[.5px] border-orange-custom py-3 px-4 items-center fixed top-0 left-0 right-0 z-50">
       <div className="flex gap-8">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.png" alt="logo" width={38} height={32} />

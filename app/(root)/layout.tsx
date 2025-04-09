@@ -10,7 +10,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <Header />
-      <div className="root-layout">{children}</div>
+      <div className="">{children}</div>
     </div>
   );
 };
