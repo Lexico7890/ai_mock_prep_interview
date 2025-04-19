@@ -13,7 +13,7 @@ import { IoIosTimer } from "react-icons/io";
 const FeaturesDashboard = () => {
   return (
     <article className="flex flex-col gap-4 mt-16 justify-center items-center bg-gray-custom-two p-16">
-      <div className="flex flex-col gap-4 justify-center items-center">
+      <div className="flex flex-col gap-4 justify-center items-center text-features">
         <span className="text-one opacity-0 text-base font-semibold text-center bg-orange-custom/30 px-3 py-1 rounded-full text-orange-custom">
           Key Features
         </span>
@@ -25,7 +25,7 @@ const FeaturesDashboard = () => {
           prepare for any interview scenario.
         </p>
       </div>
-      <div className="flex flex-wrap gap-4 mt-16">
+      <div className="flex flex-wrap gap-4 mt-16 justify-center cards">
         <Card className="w-[350px]">
           <CardHeader className="flex justify-center items-center flex-col gap-4">
             <CardTitle>
