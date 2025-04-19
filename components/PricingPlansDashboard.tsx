@@ -2,10 +2,13 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { CiCircleCheck } from "react-icons/ci";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 
 const PricingPlansDashboard = () => {
   return (
@@ -23,7 +26,7 @@ const PricingPlansDashboard = () => {
         </p>
       </div>
       <div className="flex flex-wrap gap-4 mt-16 justify-center">
-        <Card className="w-[350px]">
+        <Card className="w-[350px] flex flex-col gap-10">
           <CardHeader className="flex justify-center items-center flex-col gap-4">
             <CardTitle className="text-2xl">Free</CardTitle>
             <CardDescription>
@@ -49,10 +52,17 @@ const PricingPlansDashboard = () => {
               </li>
             </ol>
           </CardContent>
+          <CardFooter>
+            <Button className="w-full" variant="outline">
+              Get Started
+            </Button>
+          </CardFooter>
         </Card>
-        <Card className="w-[350px] bg-orange-custom/30">
+        <Card className="w-[350px] bg-orange-custom/30 flex flex-col gap-10">
           <CardHeader className="flex justify-center items-center flex-col gap-4">
-            <CardTitle className="text-2xl">Pro</CardTitle>
+            <CardTitle className="text-2xl flex gap-2 justify-center items-center">
+              Pro <Badge className="bg-orange-custom">Popular</Badge>
+            </CardTitle>
             <CardDescription>
               Comprehensive interview preparation
             </CardDescription>
@@ -80,18 +90,45 @@ const PricingPlansDashboard = () => {
               </li>
             </ol>
           </CardContent>
+          <CardFooter>
+            <Button className="w-full" variant="outline">
+              Get Started
+            </Button>
+          </CardFooter>
         </Card>
-        <Card className="w-[350px]">
+        <Card className="w-[350px] flex flex-col gap-10">
           <CardHeader className="flex justify-center items-center flex-col gap-4">
-            <CardTitle>Enterprise</CardTitle>
-            <CardDescription>On-Demand Practice</CardDescription>
+            <CardTitle className="text-2xl">Enterprise</CardTitle>
+            <CardDescription>For teams and organizations</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>
-              Practice anytime, anywhere with our on-demand platform. No
-              scheduling or waiting required.
+            <p className="text-4xl">
+              <span className="text-orange-custom">Custom </span>
             </p>
+            <ol className="flex flex-col gap-2 mt-4">
+              <li className="flex gap-2">
+                <CiCircleCheck className="h-6 w-6 text-orange-custom" />
+                Everything in Pro
+              </li>
+              <li className="flex gap-2">
+                <CiCircleCheck className="h-6 w-6 text-orange-custom" />
+                Custom interview scenarios
+              </li>
+              <li className="flex gap-2">
+                <CiCircleCheck className="h-6 w-6 text-orange-custom" />
+                Team management dashboard
+              </li>
+              <li className="flex gap-2">
+                <CiCircleCheck className="h-6 w-6 text-orange-custom" />
+                Priority support
+              </li>
+            </ol>
           </CardContent>
+          <CardFooter>
+            <Button className="w-full" variant="outline">
+              Contact Us
+            </Button>
+          </CardFooter>
         </Card>
       </div>
     </article>
