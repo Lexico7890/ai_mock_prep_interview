@@ -5,6 +5,9 @@ import useAnimation from "../hooks/useAnimation";
 import FeaturesDashboard from "@/components/FeaturesDashboard";
 import HowWorkItDashboard from "@/components/HowWorkItDashboard";
 import PricingPlansDashboard from "@/components/PricingPlansDashboard";
+import TestimonialDashboard from "@/components/TestimonialDashboard";
+import ReadyDashboard from "@/components/ReadyDashboard";
+import FooterDashboard from "@/components/FooterDashboard";
 
 const Page = () => {
   useAnimation()
@@ -14,6 +17,9 @@ const Page = () => {
       <FeaturesDashboard />
       <HowWorkItDashboard />
       <PricingPlansDashboard />
+      <TestimonialDashboard />
+      <ReadyDashboard />
+      <FooterDashboard />
     </section>
   );
 };

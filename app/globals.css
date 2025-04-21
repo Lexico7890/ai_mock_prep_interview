@@ -208,7 +208,7 @@
   }
 
   .card {
-    @apply dark-gradient rounded-2xl min-h-full;
+    @apply bg-gray-custom-two rounded-2xl min-h-full;
   }
 
   .form {
@@ -219,11 +219,11 @@
     }
 
     .input {
-      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-gray-400;
+      @apply !bg-gray-custom-one !rounded-full !min-h-12 !px-5 placeholder:!text-gray-400;
     }
 
     .btn {
-      @apply !w-full !bg-primary-200 !text-dark-100 hover:!bg-primary-200/80 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer;
+      @apply !w-full !bg-orange-custom/30 !text-orange-custom hover:!bg-orange-custom/70 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer;
     }
   }
 
