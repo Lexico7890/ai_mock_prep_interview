@@ -76,12 +76,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const isSignIn = type === "sign-in";
   return (
     <div className="card-border lg:min-w-[566px]">
-      <div className="flex flex-col gap-6 card py-14 px-10">
+      <div className="flex flex-col gap-6 card py-6 px-10">
         <div className="flex flex-row gap-2 justify-center">
+          <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.png" alt="logo" width={38} height={32} />
-          <h2 className="text-primary-100">AI Interview Ninja</h2>
+          <h2 className="text-white">AI Interview Ninja</h2>
+          </Link>
         </div>
-        <h3>Practice job interview with AI</h3>
+        <h3 className="text-gray-custom-three">Practice job interview with AI</h3>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 form">
             {!isSignIn && (
@@ -115,7 +117,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
           {isSignIn ? "No account yet?" : "Already have an account?"}{" "}
           <Link
             href={isSignIn ? "/sign-up" : "/sign-in"}
-            className="font-bold text-user-primary ml-1"
+            className="font-bold text-orange-custom ml-1"
           >
             {!isSignIn ? "Sign In" : "Sign Up"}
           </Link>
