@@ -11,9 +11,8 @@ import Link from "next/link";
 import { toast } from "sonner";
 import FormField from "./FormField";
 import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/client";
-import { signIn, signUp } from "@/lib/actions/auth.action";
+import { FaGithub, FaGoogle } from "react-icons/fa";
+import { login, signup } from "@/lib/actions/authSupabase.action";
 
 const authFormSchema = (type: FormType) => {
   return z.object({
@@ -39,33 +38,29 @@ const AuthForm = ({ type }: { type: FormType }) => {
     try {
       if (type === "sign-up") {
         const { name, email, password } = values;
-        const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
-        const result = await signUp({
-          uid: userCredentials.user.uid,
+        const isSignUp = await signup({
           name: name!,
           email,
           password,
-        })
-        if (!result.success) {
-          toast.error(result?.message);
+        });
+        if (!isSignUp) {
+          toast.error("Error signing up, please try again");
           return;
         }
         toast.success("Signed up successfully, Please sign in");
         router.push("/sign-in");
       } else {
-        const { email, password } = values
-        const userCredential = await signInWithEmailAndPassword(auth, email, password)
-        const idToken = await userCredential.user.getIdToken();
-        if (!idToken) {
-          toast.error("Something went wrong");
+        const { email, password } = values;
+        const isLogin = await login({
+          email,
+          password,
+        });
+        if (!isLogin) {
+          toast.error("Invalid credentials, please try again");
           return;
         }
-        await signIn({
-          email,
-          idToken,
-        })
         toast.success("Signed in successfully, welcome");
-        router.push("/");
+        router.push("/home");
       }
     } catch (error) {
       console.log(error);
@@ -79,13 +74,18 @@ const AuthForm = ({ type }: { type: FormType }) => {
       <div className="flex flex-col gap-6 card py-6 px-10">
         <div className="flex flex-row gap-2 justify-center">
           <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.png" alt="logo" width={38} height={32} />
-          <h2 className="text-white">AI Interview Ninja</h2>
+            <Image src="/logo.png" alt="logo" width={38} height={32} />
+            <h2 className="text-white">AI Interview Ninja</h2>
           </Link>
         </div>
-        <h3 className="text-gray-custom-three">Practice job interview with AI</h3>
+        <h3 className="text-gray-custom-three text-lg">
+          Practice job interview with AI
+        </h3>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 form">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 form"
+          >
             {!isSignIn && (
               <FormField
                 control={form.control}
@@ -108,11 +108,21 @@ const AuthForm = ({ type }: { type: FormType }) => {
               placeholder="Your Password"
               type="password"
             />
-            <Button type="submit" className="btn" >
+            <Button type="submit" className="btn">
               {isSignIn ? "Sign In" : "Create an Account"}
             </Button>
           </form>
         </Form>
+        {isSignIn && (
+          <div className="flex gap-2">
+            <Button className="w-1/2 rounded-full border-1 border-green-400 bg-transparent text-green-400">
+              <FaGoogle />
+            </Button>
+            <Button className="w-1/2 rounded-full border-1 border-blue-400 bg-transparent text-blue-400">
+              <FaGithub />
+            </Button>
+          </div>
+        )}
         <p className="text-center">
           {isSignIn ? "No account yet?" : "Already have an account?"}{" "}
           <Link
