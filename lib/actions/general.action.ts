@@ -3,11 +3,12 @@
 import { generateObject } from "ai";
 import { google } from "@ai-sdk/google";
 
-import { db } from "@/firebase/admin";
 import { feedbackSchema } from "@/constants";
+import { createClient } from "@/utils/supabase/middleware";
 
 export async function createFeedback(params: CreateFeedbackParams) {
-  const { interviewId, userId, transcript, feedbackId } = params;
+  const { interviewId, userId, transcript } = params;
+  const supabase = await createClient();
 
   try {
     const formattedTranscript = transcript
@@ -49,17 +50,19 @@ export async function createFeedback(params: CreateFeedbackParams) {
       createdAt: new Date().toISOString(),
     };
 
-    let feedbackRef;
+    const { data, error } = await supabase
+      .from("feedback")
+      .insert([feedback])
+      .select()
+      .single();
 
-    if (feedbackId) {
+    /*if (feedbackId) {
       feedbackRef = db.collection("feedback").doc(feedbackId);
     } else {
       feedbackRef = db.collection("feedback").doc();
-    }
+    }*/
 
-    await feedbackRef.set(feedback);
-
-    return { success: true, feedbackId: feedbackRef.id };
+    return { success: true, feedbackId: data?.id };
   } catch (error) {
     console.error("Error saving feedback:", error);
     return { success: false };
@@ -67,35 +70,45 @@ export async function createFeedback(params: CreateFeedbackParams) {
 }
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
-  const interview = await db.collection("interviews").doc(id).get();
+  const supabase = await createClient();
+  const { data } = await supabase.from("interviews").select("*").eq("id", id).single();
 
-  return interview.data() as Interview | null;
+  return data as Interview | null;
 }
 
 export async function getFeedbackByInterviewId(
   params: GetFeedbackByInterviewIdParams
 ): Promise<Feedback | null> {
   const { interviewId, userId } = params;
+  const supabase = await createClient();
 
-  const querySnapshot = await db
+  const { data: feedback, error } = await supabase
+    .from("feedback")
+    .select("*")
+    .eq("interviewId", interviewId)
+    .eq("userId", userId)
+    .limit(1)
+    .single();
+
+  /* const querySnapshot = await db
     .collection("feedback")
     .where("interviewId", "==", interviewId)
     .where("userId", "==", userId)
     .limit(1)
     .get();
 
-  if (querySnapshot.empty) return null;
+  if (querySnapshot.empty) return null; */
 
-  const feedbackDoc = querySnapshot.docs[0];
-  return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
+  return { id: feedback.id, ...feedback } as Feedback;
 }
 
 export async function getLatestInterviews(
   params: GetLatestInterviewsParams
 ): Promise<Interview[] | null> {
   const { userId, limit = 20 } = params;
+  const supabase = await createClient();
 
-  const interviews = await db
+  /* const interviews = await db
     .collection("interviews")
     .orderBy("createdAt", "desc")
     .where("finalized", "==", true)
@@ -106,13 +119,41 @@ export async function getLatestInterviews(
   return interviews.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  })) as Interview[];
+  })) as Interview[]; */
+  const { data: interviews, error } = await supabase
+    .from("interviews")
+    .select("*")
+    .eq("finalized", true)
+    .neq("userId", userId)
+    .order("createdAt", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Error fetching interviews:", error);
+    return null;
+  }
+
+  return interviews as Interview[];
 }
 
 export async function getInterviewsByUserId(
   userId: string
 ): Promise<Interview[] | null> {
-  const interviews = await db
+  const supabase = await createClient();
+  const { data: interviews, error } = await supabase
+    .from("interviews")
+    .select("*")
+    .eq("userId", userId)
+    .order("createdAt", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching interviews:", error);
+    return null;
+  }
+
+  return interviews as Interview[];
+
+  /* const interviews = await db
     .collection("interviews")
     .where("userId", "==", userId)
     .orderBy("createdAt", "desc")
@@ -121,5 +162,5 @@ export async function getInterviewsByUserId(
   return interviews.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  })) as Interview[];
+  })) as Interview[]; */
 }

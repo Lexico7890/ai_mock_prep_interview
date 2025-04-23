@@ -1,12 +1,12 @@
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
 
-import { db } from "@/firebase/admin";
 import { getRandomInterviewCover } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/middleware";
 
 export async function POST(request: Request) {
-  console.log("Request received to generate interview questions");
   const { type, role, level, techstack, amount, userid } = await request.json();
+  const supabase = await createClient();
 
   try {
     const { text: questions } = await generateText({
@@ -38,7 +38,16 @@ export async function POST(request: Request) {
       createdAt: new Date().toISOString(),
     };
 
-    await db.collection("interviews").add(interview);
+    const { error } = await supabase
+      .from("interviews")
+      .insert([interview])
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error inserting interview:", error);
+      return Response.json({ success: false, error: error }, { status: 500 });
+    }
 
     return Response.json({ success: true }, { status: 200 });
   } catch (error) {
