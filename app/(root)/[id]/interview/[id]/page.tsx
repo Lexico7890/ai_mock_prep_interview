@@ -8,13 +8,12 @@ import {
   getFeedbackByInterviewId,
   getInterviewById,
 } from "@/lib/actions/general.action";
-import { getCurrentUser } from "@/lib/actions/auth.action";
 import DisplayTechIcons from "@/components/DisplayTechIcons";
+import { isAuthenticated } from "@/lib/actions/authSupabase.action";
 
 const InterviewDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
-
-  const user = await getCurrentUser();
+  const { user } = await isAuthenticated()
 
   const interview = await getInterviewById(id);
   if (!interview) redirect("/");
@@ -48,7 +47,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
       </div>
 
       <Agent
-        userName={user?.name ?? "Guest"}
+        userName={user?.user_metadata?.name ?? "Guest"}
         userId={user?.id}
         interviewId={id}
         type="interview"

@@ -8,11 +8,11 @@ import {
   getInterviewById,
 } from "@/lib/actions/general.action";
 import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/actions/auth.action";
+import { isAuthenticated } from "@/lib/actions/authSupabase.action";
 
 const Feedback = async ({ params }: RouteParams) => {
   const { id } = await params;
-  const user = await getCurrentUser();
+  const { user } = await isAuthenticated()
 
   const interview = await getInterviewById(id);
   if (!interview) redirect("/");
