@@ -12,7 +12,6 @@ import FooterDashboard from "@/components/FooterDashboard";
 const Page = () => {
   useAnimation()
   return (
-    <>
     <section className="flex flex-col gap-16">
       <DemoDashboard />
       <FeaturesDashboard />
@@ -22,7 +21,6 @@ const Page = () => {
       <ReadyDashboard />
       <FooterDashboard />
     </section>
-    </>
   );
 };
 
