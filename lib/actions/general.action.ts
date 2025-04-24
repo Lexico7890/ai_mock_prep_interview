@@ -56,12 +56,10 @@ export async function createFeedback(params: CreateFeedbackParams) {
       .select()
       .single();
 
-    /*if (feedbackId) {
-      feedbackRef = db.collection("feedback").doc(feedbackId);
-    } else {
-      feedbackRef = db.collection("feedback").doc();
-    }*/
-
+    if (error) {
+      console.error("Error inserting feedback:", error);
+      return { success: false };
+    }
     return { success: true, feedbackId: data?.id };
   } catch (error) {
     console.error("Error saving feedback:", error);
@@ -71,7 +69,11 @@ export async function createFeedback(params: CreateFeedbackParams) {
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
   const supabase = await createClient();
-  const { data } = await supabase.from("interviews").select("*").eq("id", id).single();
+  const { data } = await supabase
+    .from("interviews")
+    .select("*")
+    .eq("id", id)
+    .single();
 
   return data as Interview | null;
 }
@@ -86,19 +88,17 @@ export async function getFeedbackByInterviewId(
     .from("feedback")
     .select("*")
     .eq("interviewId", interviewId)
-    .eq("user_id", userId)
+    .eq("userId", userId)
     .limit(1)
-    .single();
+    .maybeSingle();
 
-  /* const querySnapshot = await db
-    .collection("feedback")
-    .where("interviewId", "==", interviewId)
-    .where("userId", "==", userId)
-    .limit(1)
-    .get();
-
-  if (querySnapshot.empty) return null; */
-
+  if (error) {
+    console.error("Error fetching feedback:", error);
+    return null;
+  }
+  if (!feedback) {
+    return null;
+  }
   return { id: feedback.id, ...feedback } as Feedback;
 }
 
@@ -108,18 +108,6 @@ export async function getLatestInterviews(
   const { userId, limit = 20 } = params;
   const supabase = await createClient();
 
-  /* const interviews = await db
-    .collection("interviews")
-    .orderBy("createdAt", "desc")
-    .where("finalized", "==", true)
-    .where("userId", "!=", userId)
-    .limit(limit)
-    .get();
-
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[]; */
   const { data: interviews, error } = await supabase
     .from("interviews")
     .select("*")
@@ -152,15 +140,4 @@ export async function getInterviewsByUserId(
   }
 
   return interviews as Interview[];
-
-  /* const interviews = await db
-    .collection("interviews")
-    .where("userId", "==", userId)
-    .orderBy("createdAt", "desc")
-    .get();
-
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[]; */
 }
