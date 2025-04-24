@@ -34,10 +34,10 @@ export async function POST(request: Request) {
         data: techstack.split(","),
       },
       questions: JSON.parse(questions),
-      userId: userid,
+      user_id: userid,
       finalized: true,
       coverImage: getRandomInterviewCover(),
-      createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     };
 
     const { error } = await supabase
