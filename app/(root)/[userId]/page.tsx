@@ -11,7 +11,7 @@ import {
 import { isAuthenticated } from "@/lib/actions/authSupabase.action";
 
 async function Home() {
-  const { user } = await isAuthenticated()
+  const { user } = await isAuthenticated();
 
   const [userInterviews, allInterview] = await Promise.all([
     user?.id ? getInterviewsByUserId(user.id) : [],
@@ -44,7 +44,7 @@ async function Home() {
         />
       </section>
 
-      <section className="flex flex-col gap-6 mt-8">
+      <section className="flex flex-col gap-6 mt-8 p-4">
         <h2>Your Interviews</h2>
 
         <div className="interviews-section">
@@ -61,12 +61,14 @@ async function Home() {
               />
             ))
           ) : (
-            <p>You haven&apos;t taken any interviews yet</p>
+            <div className="flex flex-col w-full items-center justify-center gap-4 p-4 border rounded-lg">
+              <p>You haven&apos;t taken any interviews yet</p>
+            </div>
           )}
         </div>
       </section>
 
-      <section className="flex flex-col gap-6 mt-8">
+      <section className="flex flex-col gap-6 mt-8 p-4">
         <h2>Take Interviews</h2>
 
         <div className="interviews-section">
@@ -83,7 +85,9 @@ async function Home() {
               />
             ))
           ) : (
-            <p>There are no interviews available</p>
+            <div className="flex flex-col w-full items-center justify-center gap-4 p-4 border rounded-lg">
+              <p>There are no interviews available</p>
+            </div>
           )}
         </div>
       </section>

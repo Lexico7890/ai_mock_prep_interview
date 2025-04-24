@@ -27,9 +27,9 @@ const InterviewCard = async ({
 
   const badgeColor =
     {
-      Behavioral: "bg-light-400",
-      Mixed: "bg-light-600",
-      Technical: "bg-light-800",
+      Behavioral: "bg-gray-400",
+      Mixed: "bg-gray-600",
+      Technical: "bg-gray-800",
     }[normalizedType] || "bg-light-600";
 
   const formattedDate = dayjs(
@@ -88,8 +88,8 @@ const InterviewCard = async ({
             <Link
               href={
                 feedback
-                  ? `/interview/${interviewId}/feedback`
-                  : `/interview/${interviewId}`
+                  ? `/${userId}/interview/${interviewId}/feedback`
+                  : `/${userId}/interview/${interviewId}`
               }
             >
               {feedback ? "Check Feedback" : "View Interview"}
