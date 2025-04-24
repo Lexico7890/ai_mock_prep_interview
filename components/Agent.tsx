@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
 import { createFeedback } from "@/lib/actions/general.action";
+import { FaUser } from "react-icons/fa";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -164,13 +165,7 @@ const Agent = ({
         {/* User Profile Card */}
         <div className="card-border">
           <div className="card-content">
-            <Image
-              src="/christopher.png"
-              alt="profile-image"
-              width={539}
-              height={539}
-              className="rounded-full object-cover size-[120px]"
-            />
+            <FaUser className="h-[120px] w-[120px] rounded-full" />
             <h3>{userName}</h3>
           </div>
         </div>

@@ -86,7 +86,7 @@ export async function getFeedbackByInterviewId(
     .from("feedback")
     .select("*")
     .eq("interviewId", interviewId)
-    .eq("userId", userId)
+    .eq("user_id", userId)
     .limit(1)
     .single();
 
@@ -124,8 +124,8 @@ export async function getLatestInterviews(
     .from("interviews")
     .select("*")
     .eq("finalized", true)
-    .neq("userId", userId)
-    .order("createdAt", { ascending: false })
+    .neq("user_id", userId)
+    .order("created_at", { ascending: false })
     .limit(limit);
 
   if (error) {
@@ -143,8 +143,8 @@ export async function getInterviewsByUserId(
   const { data: interviews, error } = await supabase
     .from("interviews")
     .select("*")
-    .eq("userId", userId)
-    .order("createdAt", { ascending: false });
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Error fetching interviews:", error);
