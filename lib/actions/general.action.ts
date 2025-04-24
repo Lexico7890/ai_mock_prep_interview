@@ -47,7 +47,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
       strengths: object.strengths,
       areasForImprovement: object.areasForImprovement,
       finalAssessment: object.finalAssessment,
-      createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     };
 
     const { data, error } = await supabase

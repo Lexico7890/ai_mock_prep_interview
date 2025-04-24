@@ -11,14 +11,14 @@ import { Button } from "@/components/ui/button";
 import { isAuthenticated } from "@/lib/actions/authSupabase.action";
 
 const Feedback = async ({ params }: RouteParams) => {
-  const { id } = await params;
+  const { interviewId } = await params;
   const { user } = await isAuthenticated()
 
-  const interview = await getInterviewById(id);
+  const interview = await getInterviewById(interviewId);
   if (!interview) redirect("/");
 
   const feedback = await getFeedbackByInterviewId({
-    interviewId: id,
+    interviewId: interviewId,
     userId: user?.id ?? "",
   });
 
@@ -94,8 +94,8 @@ const Feedback = async ({ params }: RouteParams) => {
 
       <div className="buttons">
         <Button className="btn-secondary flex-1">
-          <Link href="/" className="flex w-full justify-center">
-            <p className="text-sm font-semibold text-primary-200 text-center">
+          <Link href={`/${user?.id}`} className="flex w-full justify-center">
+            <p className="text-sm font-semibold text-gray-200 text-center">
               Back to dashboard
             </p>
           </Link>
@@ -103,10 +103,10 @@ const Feedback = async ({ params }: RouteParams) => {
 
         <Button className="btn-primary flex-1">
           <Link
-            href={`/interview/${id}`}
+            href={`/${user?.id}/interview/${interviewId}`}
             className="flex w-full justify-center"
           >
-            <p className="text-sm font-semibold text-black text-center">
+            <p className="text-sm font-semibold text-white text-center">
               Retake Interview
             </p>
           </Link>

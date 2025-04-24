@@ -12,19 +12,19 @@ import DisplayTechIcons from "@/components/DisplayTechIcons";
 import { isAuthenticated } from "@/lib/actions/authSupabase.action";
 
 const InterviewDetails = async ({ params }: RouteParams) => {
-  const { id } = await params;
+  const { interviewId } = await params;
   const { user } = await isAuthenticated()
 
-  const interview = await getInterviewById(id);
-  if (!interview) redirect("/");
+  const interview = await getInterviewById(interviewId);
+  if (!interview) redirect("/home");
 
   const feedback = await getFeedbackByInterviewId({
-    interviewId: id,
+    interviewId: interviewId,
     userId: user ? user.id : "",
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-6 p-4">
       <div className="flex flex-row gap-4 justify-between">
         <div className="flex flex-row gap-4 items-center max-sm:flex-col">
           <div className="flex flex-row gap-4 items-center">
@@ -49,12 +49,12 @@ const InterviewDetails = async ({ params }: RouteParams) => {
       <Agent
         userName={user?.user_metadata?.name ?? "Guest"}
         userId={user?.id}
-        interviewId={id}
+        interviewId={interviewId}
         type="interview"
         questions={interview.questions}
         feedbackId={feedback?.id}
       />
-    </>
+    </div>
   );
 };
 
