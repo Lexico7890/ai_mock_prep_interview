@@ -97,16 +97,16 @@ const Agent = ({
       });
 
       if (success) {
-        router.push(`/interview/${interviewId}/feedback`);
+        router.push(`/${userId}/interview/${interviewId}/feedback`);
       } else {
         console.log("Error saving feedback");
-        router.push("/");
+        router.push(`/${userId}`);
       }
     };
 
     if (callStatus === CallStatus.FINISHED) {
       if (type === "generate") {
-        router.push("/");
+        router.push(`/${userId}`);
       } else {
         handleGenerateFeedback(messages);
       }
