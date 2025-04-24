@@ -30,9 +30,7 @@ export async function POST(request: Request) {
       role: role,
       type: type,
       level: level,
-      techstack: {
-        data: techstack.split(","),
-      },
+      techstack: techstack.split(","),
       questions: JSON.parse(questions),
       user_id: userid,
       finalized: true,
